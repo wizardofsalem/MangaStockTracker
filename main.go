@@ -5,6 +5,7 @@ import (
 
 	"salemcodex.com/mangastocktracker/internal/csvio"
 	"salemcodex.com/mangastocktracker/internal/stock"
+	"salemcodex.com/mangastocktracker/internal/viz"
 )
 
 func main() {
@@ -83,4 +84,11 @@ func main() {
 	log.Println("Revenue = ", totalSoldValue)
 	log.Println("Current profit: ", totalSoldValue-totalBoughtValue)
 	log.Println("Current profit percentage = %", profitMarginFactor*100)
+
+	costOfSold := weightedAverageSold * float64(totalSold)
+	profitOnSold := totalSoldValue - costOfSold
+	if err := viz.GenerateCharts(remaining, soldStock, stockMap, totalSoldValue, costOfSold, profitOnSold, "charts.html"); err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Charts generated: charts.html")
 }
